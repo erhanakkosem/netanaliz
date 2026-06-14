@@ -245,13 +245,13 @@ export default function HomePage() {
 
           <div className="hidden items-center gap-3 md:flex">
             <Link
-              href="/auth"
+              href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
             >
               Giriş Yap
             </Link>
             <Link
-              href="/kayit"
+              href="/register"
               className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25"
             >
               Kayıt Ol
@@ -282,14 +282,14 @@ export default function HomePage() {
               ))}
               <div className="border-t border-border pt-3">
                 <Link
-                  href="/auth"
+                  href="/login"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-card hover:text-foreground"
                 >
                   Giriş Yap
                 </Link>
                 <Link
-                  href="/kayit"
+                  href="/register"
                   onClick={() => setMobileMenuOpen(false)}
                   className="mt-2 block rounded-lg bg-primary px-3 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-primary-dark"
                 >
@@ -340,14 +340,14 @@ export default function HomePage() {
 
             <div className="mt-10 flex animate-fade-in-up flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
-                href="/kayit"
+                href="/register"
                 className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/30 sm:w-auto"
               >
                 Hemen Başla
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
-                href="/kayit?free=true"
+                href="/register?free=true"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-8 py-4 text-base font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-card-hover sm:w-auto"
               >
                 <Star className="h-5 w-5 text-primary" />
@@ -533,7 +533,7 @@ export default function HomePage() {
                 </ul>
 
                 <Link
-                  href="/kayit"
+                  href="/register"
                   className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-all ${
                     plan.highlighted
                       ? "bg-primary text-white shadow-lg hover:bg-primary-dark hover:shadow-xl hover:shadow-primary/25"
@@ -566,7 +566,7 @@ export default function HomePage() {
 
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Link
-                  href="/kayit"
+                  href="/register"
                   className="group inline-flex w-full items-center justify-center gap-3 rounded-xl bg-foreground px-8 py-4 text-base font-semibold text-background transition-all hover:bg-foreground/90 sm:w-auto"
                 >
                   <Apple className="h-6 w-6" />
@@ -578,7 +578,7 @@ export default function HomePage() {
                   </div>
                 </Link>
                 <Link
-                  href="/kayit"
+                  href="/register"
                   className="group inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-card px-8 py-4 text-base font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-card-hover sm:w-auto"
                 >
                   <Smartphone className="h-6 w-6" />
