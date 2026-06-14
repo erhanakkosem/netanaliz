@@ -29,6 +29,10 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL('/archive', req.url))
   }
 
+  if (pathname === '/' && isAuth) {
+    return NextResponse.redirect(new URL('/archive', req.url))
+  }
+
   if (!isPublicPage && !isAuth) {
     const loginUrl = new URL('/login', req.url)
     loginUrl.searchParams.set('callbackUrl', pathname)
