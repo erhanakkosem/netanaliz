@@ -1,0 +1,336 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// For local dev: keep provider = "sqlite" and DATABASE_URL="file:./dev.db"
+// For Vercel production: change provider to "postgresql" and set DATABASE_URL to your PostgreSQL connection string
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String         @id @default(uuid())
+  name           String?
+  email          String?        @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  role           String         @default("FREE")
+  credits        Int            @default(0)
+  telegramChatId String?
+  resetToken     String?
+  resetTokenExpiry DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  smartFilters    SmartFilter[]
+  smartAnalyses   SmartAnalysis[]
+  droppingAlerts  DroppingOddsAlert[]
+  coupons         Coupon[]
+  bulletinScans   BulletinScan[]
+  payments        Payment[]
+  subscriptions   Subscription[]
+  notifications   Notification[]
+  followers       UserFollow[]   @relation("following")
+  following       UserFollow[]   @relation("follower")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @default("")
+  access_token      String? @default("")
+  expires_at        Int?
+  token_type        String? @default("")
+  scope             String? @default("")
+  id_token          String? @default("")
+  session_state     String? @default("")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Match {
+  id        String   @id @default(uuid())
+  matchDate DateTime
+  league    String
+  homeTeam  String
+  awayTeam  String
+  homeScore Int?
+  awayScore Int?
+  result    String?
+  status    String   @default("SCHEDULED")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matchOdds      MatchOdds[]
+  smartAnalyses  SmartAnalysis[]
+  droppingAlerts DroppingOddsAlert[]
+  predictions    Prediction[]
+  inPlayEvents   InPlayEvent[]
+  oddsHistories  OddsHistory[]
+  couponMatches  CouponMatch[]
+
+  @@index([matchDate])
+  @@index([league])
+  @@index([status])
+}
+
+model MatchOdds {
+  id           String   @id @default(uuid())
+  matchId      String
+  bookmakerId  String
+  oddsType     String
+  openingOdds  Float?
+  closingOdds  Float?
+  createdAt    DateTime @default(now())
+
+  match     Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  bookmaker Bookmaker @relation(fields: [bookmakerId], references: [id], onDelete: Cascade)
+
+  @@index([matchId])
+  @@index([bookmakerId])
+  @@index([oddsType])
+}
+
+model Bookmaker {
+  id        String    @id @default(uuid())
+  code      String    @unique
+  name      String
+  isActive  Boolean   @default(true)
+  sortOrder Int       @default(0)
+
+  matchOdds      MatchOdds[]
+  droppingAlerts DroppingOddsAlert[]
+  oddsHistories  OddsHistory[]
+}
+
+model SmartFilter {
+  id             String   @id @default(uuid())
+  userId         String
+  name           String
+  bookmakerIds   String   @default("[]")
+  oddsType       String   @default("MS1")
+  minOdds        Float?
+  maxOdds        Float?
+  useOpeningOdds Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  smartAnalyses  SmartAnalysis[]
+  bulletinScans  BulletinScan[]
+
+  @@index([userId])
+}
+
+model SmartAnalysis {
+  id       String   @id @default(uuid())
+  userId   String
+  matchId  String
+  filterId String
+  result   String?
+  stats    String   @default("{}")
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match  Match        @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  filter SmartFilter  @relation(fields: [filterId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([matchId])
+  @@index([filterId])
+}
+
+model DroppingOddsAlert {
+  id           String   @id @default(uuid())
+  userId       String
+  matchId      String
+  bookmakerId  String
+  oddsType     String
+  initialOdds Float
+  currentOdds Float
+  threshold    Float    @default(0.1)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match     Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  bookmaker Bookmaker @relation(fields: [bookmakerId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([matchId])
+}
+
+model Coupon {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  odds      Float
+  status    String   @default("ACTIVE")
+  stake     Float?
+  createdAt DateTime @default(now())
+
+  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  matches CouponMatch[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model CouponMatch {
+  id        String @id @default(uuid())
+  couponId  String
+  matchId   String
+  selection String
+  odds      Float
+
+  coupon Coupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  match  Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@index([couponId])
+  @@index([matchId])
+}
+
+model Prediction {
+  id         String   @id @default(uuid())
+  matchId    String   @unique
+  prediction String
+  confidence Float?
+  homeProb   Float?
+  drawProb   Float?
+  awayProb   Float?
+  createdAt  DateTime @default(now())
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+}
+
+model BulletinScan {
+  id        String   @id @default(uuid())
+  userId    String
+  filterId  String
+  date      DateTime @default(now())
+  results   String   @default("[]")
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filter SmartFilter  @relation(fields: [filterId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([filterId])
+  @@index([date])
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  userId    String
+  amount    Float
+  package   String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription  Subscription?
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Subscription {
+  id          String   @id @default(uuid())
+  userId      String
+  packageType String
+  startDate   DateTime @default(now())
+  endDate     DateTime
+  isActive    Boolean  @default(true)
+  paymentId   String?  @unique
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment? @relation(fields: [paymentId], references: [id])
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+}
+
+model UserFollow {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model InPlayEvent {
+  id          String   @id @default(uuid())
+  matchId     String
+  eventType   String
+  minute      Int?
+  description String
+  createdAt   DateTime @default(now())
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@index([matchId])
+  @@index([createdAt])
+}
+
+model OddsHistory {
+  id           String   @id @default(uuid())
+  matchId      String
+  bookmakerId  String
+  oddsType     String
+  odds         Float
+  timestamp    DateTime @default(now())
+
+  match     Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  bookmaker Bookmaker @relation(fields: [bookmakerId], references: [id], onDelete: Cascade)
+
+  @@index([matchId])
+  @@index([bookmakerId])
+  @@index([oddsType])
+  @@index([timestamp])
+}

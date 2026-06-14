@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  scraper:
+    build: .
+    environment:
+      - DATABASE_URL=file:./data/odds.db
+      - THE_ODDS_API_KEY=${THE_ODDS_API_KEY}
+      - SCRAPE_INTERVAL_MINUTES=15
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  # For full production setup:
+  # db:
+  #   image: postgres:16
+  #   environment:
+  #     POSTGRES_DB: orananaliz
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  # 
+  # volumes:
+  #   pgdata:
