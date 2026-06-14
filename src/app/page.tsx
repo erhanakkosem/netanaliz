@@ -116,8 +116,8 @@ const steps = [
 const plans = [
   {
     name: "Jet",
-    price: "350₺",
-    period: "/ay",
+    price: "299₺",
+    period: "/15 gün",
     description: "Hızlı ve pratik analiz için ideal",
     features: [
       "5 Kaynağa Erişim",
@@ -130,7 +130,7 @@ const plans = [
   },
   {
     name: "Standart",
-    price: "500₺",
+    price: "499₺",
     period: "/ay",
     description: "Profesyonel kullanıcılar için en çok tercih edilen",
     features: [
@@ -145,8 +145,8 @@ const plans = [
   },
   {
     name: "Premium",
-    price: "1000₺",
-    period: "/ay",
+    price: "899₺",
+    period: "/60 gün",
     description: "Tam kapsamlı profesyonel çözüm",
     features: [
       "13 Kaynağa Tam Erişim",
@@ -161,8 +161,8 @@ const plans = [
   },
   {
     name: "Elite",
-    price: "1200₺",
-    period: "/ay",
+    price: "1299₺",
+    period: "/90 gün",
     description: "Kurumsal çözümler için özel paket",
     features: [
       "Tüm Kaynaklara Erişim",

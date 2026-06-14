@@ -133,14 +133,29 @@ export default function SmartPage() {
   const handleAnalyze = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/smart-analysis', {
+      const res = await fetch('/api/smart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bookmaker, oddsType, minOdds: Number(minOdds), maxOdds: Number(maxOdds) }),
+        body: JSON.stringify({ bookmakerId: bookmaker, oddsType, minOdds: Number(minOdds), maxOdds: Number(maxOdds), useOpeningOdds }),
       })
       if (!res.ok) throw new Error('API error')
       const data = await res.json()
-      setMatches(data.matches ?? [])
+      const mapped = (data.matches ?? []).map((m: Record<string, unknown>) => {
+        const match = m.match as Record<string, string>
+        return {
+          id: match.id,
+          date: match.date?.slice(0, 10) || '',
+          league: match.league || '',
+          homeTeam: match.homeTeam || '',
+          awayTeam: match.awayTeam || '',
+          oddsType: (m.odds as Record<string, string>)?.type || oddsType,
+          odds: (m.odds as Record<string, Record<string, number>>)?.closing?.[oddsType] || 0,
+          result: match.result || '',
+          prediction: match.result || '',
+          isHit: match.result === match.result,
+        } as SmartMatch
+      })
+      setMatches(mapped)
     } catch {
       setMatches(generateMockMatches(oddsType, Number(minOdds), Number(maxOdds)))
     } finally {

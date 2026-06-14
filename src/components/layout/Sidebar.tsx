@@ -13,12 +13,14 @@ import {
   FileSearch,
   Radio,
   Ticket,
-  BarChart3,
   Crown,
   Menu,
   X,
   LogOut,
   User,
+  Settings,
+  BarChart3,
+  Shield,
 } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
@@ -33,7 +35,11 @@ const NAV_ITEMS = [
   { href: '/bulletin', label: 'Bülten Tarama', icon: FileSearch },
   { href: '/inplay', label: 'Canlı Maçlar', icon: Radio },
   { href: '/coupons', label: 'KuponX', icon: Ticket },
+  { href: '/basketball', label: 'Basketbol', icon: BarChart3 },
   { href: '/pricing', label: 'Fiyatlar', icon: Crown },
+  { href: '/profile', label: 'Profil', icon: User },
+  { href: '/settings', label: 'Ayarlar', icon: Settings },
+  { href: '/admin', label: 'Admin', icon: Shield },
 ]
 
 export default function Sidebar() {
