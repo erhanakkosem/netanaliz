@@ -6,43 +6,51 @@ import { cn } from '@/lib/utils'
 import {
   Archive, Brain, Flag, TrendingDown, DollarSign, Bot, FileSearch, Radio,
   Ticket, Crown, Menu, X, LogOut, User, Settings, BarChart3, Shield,
-  ChevronDown, Activity,
+  ChevronDown, Activity, Home, Globe,
 } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
 
 interface NavItem {
   href?: string; label: string; icon?: React.ComponentType<{ className?: string }>
-  children?: NavItem[]
+  badge?: string; badgeColor?: string; children?: NavItem[]
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: '/', label: 'Ana Sayfa', icon: Activity },
-  { href: '/free-services', label: 'Ücretsiz Servisler', icon: Shield },
-  { href: '/ai', label: 'Yapay Zeka', icon: Bot },
-  { href: '/pricing', label: 'Fiyatlar', icon: Crown },
-  { href: '/bulletin', label: 'Bülten Tarama', icon: FileSearch },
+  { href: '/archive', label: 'Home', icon: Home },
+
+  { href: '/free-services', label: 'Free Services', icon: Shield },
+
+  { href: '/ai', label: 'Artificial Intelligence', icon: Bot, badge: 'AI', badgeColor: 'bg-yellow-600' },
+
+  { href: '/pricing', label: 'Pricing', icon: Crown },
+
+  { href: '/bulletin', label: 'Bulletin Scan', icon: FileSearch, badge: 'New', badgeColor: 'bg-green-600' },
+
   { href: '/inplay', label: 'Radar', icon: Radio },
-  { label: 'Arşiv', icon: Archive, children: [
-    { href: '/archive', label: 'Yabancı Arşiv' },
-    { label: 'İddaa', icon: Flag, children: [
-      { href: '/iddaa-v1', label: 'İddaa V1' },
-      { href: '/iddaa-v2', label: 'İddaa V2' },
+
+  { label: 'Archives', icon: Archive, children: [
+    { href: '/archive', label: 'Foreign Archive', icon: Globe },
+    { label: 'Local Archive (İddaa)', icon: Flag, children: [
+      { href: '/iddaa-v1', label: 'İddaa V1 Analysis' },
+      { href: '/iddaa-v2', label: 'İddaa V2 Analysis' },
     ]},
-    { href: '/basketball', label: 'Basketbol' },
+    { href: '/basketball', label: 'Basketball Analysis' },
     { href: '/statarea', label: 'StatArea' },
   ]},
-  { label: 'Smart Analiz', icon: Brain, children: [
-    { href: '/smart', label: 'Yabancı Smart' },
+
+  { label: 'Smart Analyses', icon: Brain, children: [
+    { href: '/foreign-smart', label: 'Foreign Smart Analysis', icon: Globe },
     { href: '/iddaa-v1-smart', label: 'İddaa V1 Smart' },
     { href: '/iddaa-v2-smart', label: 'İddaa V2 Smart' },
-    { href: '/basketball-smart', label: 'Basketbol Smart' },
+    { href: '/basketball-smart', label: 'Basketball Smart' },
   ]},
+
   { href: '/dropping-odds', label: 'Dropping Odds', icon: TrendingDown },
-  { href: '/money-movement', label: 'Para Hareketleri', icon: DollarSign },
-  { href: '/coupons', label: 'KuponX', icon: Ticket },
-  { href: '/profile', label: 'Profil', icon: User },
-  { href: '/settings', label: 'Ayarlar', icon: Settings },
+  { href: '/money-movement', label: 'Money Movement', icon: DollarSign },
+  { href: '/coupons', label: 'CouponX', icon: Ticket },
+  { href: '/profile', label: 'Profile', icon: User },
+  { href: '/settings', label: 'Settings', icon: Settings },
   { href: '/admin', label: 'Admin', icon: Shield },
 ]
 
@@ -68,6 +76,11 @@ function SidebarItem({ item, depth = 0, onClose }: { item: NavItem; depth?: numb
         >
           {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
           <span className="flex-1 text-left">{item.label}</span>
+          {item.badge && (
+            <span className={cn('rounded px-1.5 py-0.5 text-[10px] font-bold text-white', item.badgeColor)}>
+              {item.badge}
+            </span>
+          )}
           <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} />
         </button>
         {open && item.children && (
@@ -97,6 +110,11 @@ function SidebarItem({ item, depth = 0, onClose }: { item: NavItem; depth?: numb
     >
       {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
       {item.label}
+      {item.badge && (
+        <span className={cn('ml-auto rounded px-1.5 py-0.5 text-[10px] font-bold text-white', item.badgeColor)}>
+          {item.badge}
+        </span>
+      )}
     </Link>
   )
 }
@@ -151,7 +169,7 @@ export default function Sidebar() {
           ))}
         </nav>
 
-        <div className="border-t border-gray-800 p-4">
+        <div className="border-t border-gray-800 p-3">
           <div className="flex items-center gap-3 rounded-lg px-3 py-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-800">
               {session?.user?.image ? (
@@ -169,9 +187,9 @@ export default function Sidebar() {
           </div>
           <button
             onClick={() => signOut()}
-            className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800/50 hover:text-gray-200"
+            className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800/50 hover:text-gray-200"
           >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <LogOut className="h-4 w-4 flex-shrink-0" />
             Çıkış Yap
           </button>
         </div>

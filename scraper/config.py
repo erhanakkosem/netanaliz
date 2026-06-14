@@ -4,8 +4,14 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 DATABASE_URL = os.getenv('DATABASE_URL', 'file:./dev.db')
-SCRAPE_INTERVAL_MINUTES = int(os.getenv('SCRAPE_INTERVAL_MINUTES', '15'))
+
+# Optimize: 6 saat = 360 dakika (500 kredi/ay limiti için)
+SCRAPE_INTERVAL_MINUTES = int(os.getenv('SCRAPE_INTERVAL_MINUTES', '360'))
+
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+
+# Free tier: sadece soccer (futbol) - 1 istek = 1 kredi
+MAX_MONTHLY_CREDITS = 500
 
 BOOKMAKERS = {
     'bet365': {'name': 'Bet365', 'code': 'OA-1', 'base_url': 'https://www.bet365.com'},

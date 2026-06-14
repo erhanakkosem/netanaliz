@@ -3,6 +3,9 @@ import os
 import time
 import schedule
 import logging
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+
 from config import SCRAPE_INTERVAL_MINUTES
 from database import Database
 from odds_api import OddsAPIClient

@@ -1,0 +1,13 @@
+{
+  "total_used": 1,
+  "monthly_used": 1,
+  "month": "2026-06",
+  "requests": [
+    {
+      "timestamp": "2026-06-14T23:14:09.427323",
+      "credits": 1,
+      "endpoint": "/sports/soccer/odds",
+      "monthly_total": 1
+    }
+  ]
+}
