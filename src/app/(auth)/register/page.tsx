@@ -62,7 +62,7 @@ export default function RegisterPage() {
       });
 
       if (result?.ok) {
-        router.push("/dashboard");
+        router.push("/archive");
       } else {
         router.push("/login");
       }

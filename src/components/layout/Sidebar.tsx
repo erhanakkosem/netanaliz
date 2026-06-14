@@ -24,17 +24,16 @@ import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
 
 const NAV_ITEMS = [
-  { href: '/dashboard/archive', label: 'Arşiv', icon: Archive },
-  { href: '/dashboard/smart', label: 'Akıllı Analiz', icon: Brain },
-  { href: '/dashboard/iddaa', label: 'İddaa Analiz', icon: Flag },
-  { href: '/dashboard/dropping-odds', label: 'Dropping Odds', icon: TrendingDown },
-  { href: '/dashboard/money-movement', label: 'Para Hareketleri', icon: DollarSign },
-  { href: '/dashboard/ai', label: 'Yapay Zeka', icon: Bot },
-  { href: '/dashboard/bulletin', label: 'Bülten Tarama', icon: FileSearch },
-  { href: '/dashboard/live', label: 'Canlı Maçlar', icon: Radio },
-  { href: '/dashboard/coupons', label: 'KuponX', icon: Ticket },
-  { href: '/dashboard/statistics', label: 'İstatistikler', icon: BarChart3 },
-  { href: '/dashboard/pricing', label: 'Fiyatlar', icon: Crown },
+  { href: '/archive', label: 'Arşiv', icon: Archive },
+  { href: '/smart', label: 'Akıllı Analiz', icon: Brain },
+  { href: '/iddaa', label: 'İddaa Analiz', icon: Flag },
+  { href: '/dropping-odds', label: 'Dropping Odds', icon: TrendingDown },
+  { href: '/money-movement', label: 'Para Hareketleri', icon: DollarSign },
+  { href: '/ai', label: 'Yapay Zeka', icon: Bot },
+  { href: '/bulletin', label: 'Bülten Tarama', icon: FileSearch },
+  { href: '/inplay', label: 'Canlı Maçlar', icon: Radio },
+  { href: '/coupons', label: 'KuponX', icon: Ticket },
+  { href: '/pricing', label: 'Fiyatlar', icon: Crown },
 ]
 
 export default function Sidebar() {
@@ -43,8 +42,7 @@ export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const isActive = (href: string) => {
-    if (href === '/dashboard') return pathname === '/dashboard'
-    return pathname.startsWith(href)
+    return pathname === href
   }
 
   return (
@@ -71,7 +69,7 @@ export default function Sidebar() {
         )}
       >
         <div className="flex h-16 items-center justify-between px-6 border-b border-gray-800">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/archive" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600">
               <TrendingDown className="h-4 w-4 text-white" />
             </div>

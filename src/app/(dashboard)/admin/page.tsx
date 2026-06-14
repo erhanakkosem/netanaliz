@@ -54,7 +54,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.role !== 'ADMIN') {
-      redirect('/dashboard')
+      redirect('/archive')
     }
   }, [status, session])
 

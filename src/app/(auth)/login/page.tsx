@@ -33,7 +33,7 @@ export default function LoginPage() {
       if (result?.error) {
         setError("E-posta veya şifre hatalı");
       } else {
-        router.push("/dashboard");
+        router.push("/archive");
       }
     } catch {
       setError("Bir hata oluştu. Lütfen tekrar deneyin.");

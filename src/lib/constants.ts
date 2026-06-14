@@ -103,14 +103,15 @@ export const PACKAGES = [
 export type PackageId = (typeof PACKAGES)[number]['id']
 
 export const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Ana Sayfa', icon: 'Home' },
-  { href: '/dashboard/matches', label: 'Maçlar', icon: 'Trophy' },
-  { href: '/dashboard/odds', label: 'Oranlar', icon: 'TrendingUp' },
-  { href: '/dashboard/smart-filter', label: 'Akıllı Filtre', icon: 'Filter' },
-  { href: '/dashboard/bulletin', label: 'Bülten Tara', icon: 'Scan' },
-  { href: '/dashboard/alerts', label: 'Bildirimler', icon: 'Bell' },
-  { href: '/dashboard/coupons', label: 'Kuponlarım', icon: 'Ticket' },
-  { href: '/dashboard/predictions', label: 'Tahminler', icon: 'BrainCircuit' },
-  { href: '/dashboard/subscription', label: 'Paketler', icon: 'Gem' },
-  { href: '/dashboard/settings', label: 'Ayarlar', icon: 'Settings' },
+  { href: '/archive', label: 'Arşiv', icon: 'Archive' },
+  { href: '/smart', label: 'Akıllı Analiz', icon: 'Brain' },
+  { href: '/iddaa', label: 'İddaa', icon: 'Flag' },
+  { href: '/dropping-odds', label: 'Dropping Odds', icon: 'TrendingDown' },
+  { href: '/money-movement', label: 'Para Hareketleri', icon: 'DollarSign' },
+  { href: '/ai', label: 'Yapay Zeka', icon: 'Bot' },
+  { href: '/bulletin', label: 'Bülten', icon: 'FileSearch' },
+  { href: '/inplay', label: 'Canlı Maçlar', icon: 'Radio' },
+  { href: '/coupons', label: 'KuponX', icon: 'Ticket' },
+  { href: '/pricing', label: 'Fiyatlar', icon: 'Crown' },
+  { href: '/settings', label: 'Ayarlar', icon: 'Settings' },
 ] as const
